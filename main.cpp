@@ -124,29 +124,39 @@ vector<vector<bool>>& visited,
 vector<vector<int>>& parent_r,
 vector<vector<int>>& parent_c,
 int exit_r, int exit_c) {
-
     stack<pair<int, int>> stack;
-    stack.push({r,c});
+
     parent_r.push_back({r,c});
     parent_c.push_back({r,c});
-    while (!stack.empty()) {
-        if (stack.top().first == exit_r && stack.top().second == exit_c) {
-            return true;
+    stack.push({r,c});
+    visited[r][c] = true;
+
+    // for loop
+    while(!stack.empty()){
+        for (int i = 0; i < 4; i++) {
+            int new_r = stack.top().first + dr[i];
+            int new_c = stack.top().second + dc[i];
+            if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
+                if (new_r > 0 && new_r < maze.size() && new_c > 0 && new_c < maze[new_r].size()) {
+                    parent_r.push_back({new_r,new_c});
+                    parent_c.push_back({new_r,new_c});
+                    stack.push({new_r, new_c});
+                    visited[new_r][new_c] = true;
+                }
+
+            }
+            if (stack.top().first == exit_r && stack.top().second == exit_c) {
+                return true;
+            }
+
         }
-
-
         stack.pop();
+        parent_r.pop_back();
+        parent_c.pop_back();
         // add the check WHEN you move up
-
-      }
+    }
     return false;
-
-
-
-    //update parent call after recursion / ???? stack
-
-     // Your code here
- }
+}
 
 
 // ----------------------------------------------------------
@@ -186,17 +196,17 @@ int main() {
     // STUDENT WORK:
     // Call your DFS, track visited, and fill parent_r and parent_c
     // ------------------------------------------------------
-    // bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
+    bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
 
     // ------------------------------------------------------
     // STUDENT WORK:
     // If found, print the path
     // ------------------------------------------------------
-    // if (found) {
-    //     printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
-    // } else {
-    //     cout << "\nNo path exists.\n";
-    // }
+    if (found) {
+        printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+    } else {
+        cout << "\nNo path exists.\n";
+    }
 
     return 0;
 }
