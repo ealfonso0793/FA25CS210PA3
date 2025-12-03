@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <stack>
 //
 using namespace std;
 
@@ -117,9 +118,35 @@ void printPath(pair<int,int> exitcell,
 // STUDENTS IMPLEMENT DFS HERE
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
-// bool dfs(……) {
-//     // Your code here
-// }
+ bool dfs(int r, int c,
+const vector<vector<int>>& maze,
+vector<vector<bool>>& visited,
+vector<vector<int>>& parent_r,
+vector<vector<int>>& parent_c,
+int exit_r, int exit_c) {
+
+    stack<pair<int, int>> stack;
+    stack.push({r,c});
+    parent_r.push_back({r,c});
+    parent_c.push_back({r,c});
+    while (!stack.empty()) {
+        if (stack.top().first == exit_r && stack.top().second == exit_c) {
+            return true;
+        }
+
+
+        stack.pop();
+        // add the check WHEN you move up
+
+      }
+    return false;
+
+
+
+    //update parent call after recursion / ???? stack
+
+     // Your code here
+ }
 
 
 // ----------------------------------------------------------
