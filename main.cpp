@@ -127,8 +127,7 @@ int exit_r, int exit_c) {
     stack<pair<int, int>> stack;
     bool can_run = false;
 
-    parent_r.push_back({r,c});
-    parent_c.push_back({r,c});
+
     stack.push({r,c});
     cout <<"starting coordinates: (" << r << ", " << c << ") \n";
 
@@ -147,11 +146,9 @@ int exit_r, int exit_c) {
             int new_c = nc + dc[i];
             if (new_r >= 0 && new_r < maze.size() && new_c >= 0 && new_c < maze[new_r].size()) {
                 if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
+                    parent_r[new_r][new_c] = nr;
+                    parent_c[new_r][new_c] = nc;
                     cout <<"("<< new_r << ", " << new_c << ")"<<"\n";
-                    parent_r.push_back({new_r,new_c});
-                    cout << "push r successful" << endl;
-                    parent_c.push_back({new_r,new_c});
-                    // cout << "push c successful" << endl;
                     stack.push({new_r, new_c});
                     cout << "Successful push" << endl;
                 }
@@ -213,7 +210,7 @@ int main() {
     // If found, print the path
     // ------------------------------------------------------
     if (found) {
-        //printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+        printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
         cout << "\nFound!\n";
     } else {
         cout << "\nNo path exists.\n";
