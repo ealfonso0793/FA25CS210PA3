@@ -125,36 +125,61 @@ vector<vector<int>>& parent_r,
 vector<vector<int>>& parent_c,
 int exit_r, int exit_c) {
     stack<pair<int, int>> stack;
+    bool can_run = false;
 
     parent_r.push_back({r,c});
     parent_c.push_back({r,c});
     stack.push({r,c});
-    visited[r][c] = true;
+    visited[r][c] = false;
+    cout <<"starting coordinates: (" << r << ", " << c << ") \n";
 
     // for loop
     while(!stack.empty()){
         for (int i = 0; i < 4; i++) {
             int new_r = stack.top().first + dr[i];
             int new_c = stack.top().second + dc[i];
-            if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
-                if (new_r > 0 && new_r < maze.size() && new_c > 0 && new_c < maze[new_r].size()) {
-                    parent_r.push_back({new_r,new_c});
-                    parent_c.push_back({new_r,new_c});
+            if (new_r >= 0 && new_r < maze.size() && new_c >= 0 && new_c < maze[new_r].size()) {
+                if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
+                    cout <<"("<< new_r << ", " << new_c << ")"<<"\n";
+                    parent_r[new_r][new_c] = stack.top().first;
+                    cout << "push r successful" << endl;
+                    parent_c[new_r][new_c] = stack.top().second;
+                    cout << "push c successful" << endl;
                     stack.push({new_r, new_c});
+                    cout << "Successful push" << endl;
                     visited[new_r][new_c] = true;
                 }
-
             }
             if (stack.top().first == exit_r && stack.top().second == exit_c) {
                 return true;
             }
-
+            // pop check
+            for (int i = 0; i < 4; i++) {
+                int new_r = stack.top().first + dr[i];
+                int new_c = stack.top().second + dc[i];
+                if (new_r >= 0 && new_r < maze.size() && new_c >= 0 && new_c < maze[new_r].size()) {
+                    if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
+                        can_run = true;
+                    }
+                }
+            }
+            if (!can_run) {
+                stack.pop();
+                parent_r.pop_back();
+                parent_c.pop_back();
+            }
+            can_run = false;
         }
         stack.pop();
         parent_r.pop_back();
         parent_c.pop_back();
-        // add the check WHEN you move up
+
+       ;// add the check WHEN you move up
+        // need to add a check before popping
+
+
     }
+
     return false;
 }
 
@@ -203,7 +228,8 @@ int main() {
     // If found, print the path
     // ------------------------------------------------------
     if (found) {
-        printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+        //printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+        cout << "\nFound!\n";
     } else {
         cout << "\nNo path exists.\n";
     }
