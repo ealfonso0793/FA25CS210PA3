@@ -148,9 +148,9 @@ int exit_r, int exit_c) {
                 if (maze[new_r][new_c] != 1 && !visited[new_r][new_c]) {
                     parent_r[new_r][new_c] = nr;
                     parent_c[new_r][new_c] = nc;
-                    cout <<"("<< new_r << ", " << new_c << ")"<<"\n";
+
                     stack.push({new_r, new_c});
-                    cout << "Successful push" << endl;
+
                 }
                 if (!stack.empty() && stack.top().first == exit_r && stack.top().second == exit_c) {
                     return true;
